@@ -4,3 +4,5 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # Public site URL; keep scanning enabled for all other environment variables.
+  SECRETS_SCAN_OMIT_KEYS = "SITE_URL"
