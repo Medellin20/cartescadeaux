@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-accent-400/50 disabled:opacity-50; }
+  .btn-primary { @apply btn bg-accent-500 text-brand-900 hover:bg-accent-400; }
+  .btn-dark { @apply btn bg-brand-900 text-white hover:bg-brand-700; }
+  .input { @apply w-full rounded-xl border border-stone-300 bg-white px-4 py-3 text-base outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30; }
+  .label { @apply mb-1 block text-sm font-medium text-stone-700; }
+  .container-p { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+}
+
+.catalog-section { background: theme("colors.brand.50"); color: theme("colors.brand.900"); }
+.catalog-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 36px; }
+.catalog-heading h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); font-weight: 800; color: theme("colors.brand.900"); margin: 8px 0; }
+.catalog-heading p:not(.catalog-eyebrow) { color: theme("colors.stone.600"); }
+.catalog-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .16em; color: theme("colors.brand.600"); }
+.catalog-search { width: 100%; min-width: 240px; border: 1px solid theme("colors.brand.100"); border-radius: 10px; background: white; color: theme("colors.brand.900"); padding: 12px 16px; }
+.catalog-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 32px 24px; }
+.catalog-item { min-width: 0; }
+.catalog-item h3 { color: theme("colors.brand.900"); text-align: center; font-weight: 700; margin: 15px 0 10px; min-height: 48px; display: flex; align-items: center; justify-content: center; }
+.gift-card { width: 100%; position: relative; isolation: isolate; aspect-ratio: 1.58; overflow: hidden; border-radius: 17px; padding: 7%; color: white; background: linear-gradient(135deg, theme("colors.brand.700"), theme("colors.brand.600") 45%, theme("colors.brand.900")); box-shadow: 0 14px 28px rgb(16 41 74 / 16%); border: 1px solid rgb(255 255 255 / 15%); display: flex; flex-direction: column; justify-content: space-between; }
+.gift-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(circle, #ffffff1a .7px, transparent 1px) 0 0 / 15px 15px; }
+.gift-card::after { content: ""; position: absolute; inset: -30% 20% -30% 50%; transform: rotate(25deg); background: linear-gradient(90deg, transparent, #ffffff14 45%, #ffffff24 55%, transparent); z-index: -1; }
+.gift-card-top { display: flex; gap: 6px; align-items: center; justify-content: space-between; }
+.gift-card-logo { font-family: inherit; font-size: clamp(10px,1.1vw,15px); font-weight: 700; white-space: nowrap; }
+.gift-card-label { font-size: 7px; letter-spacing: .13em; color: theme("colors.brand.100"); }
+.gift-card-chip { width: 24px; height: 17px; border-radius: 4px; background: linear-gradient(130deg, theme("colors.accent.400"), theme("colors.accent.600") 48%, theme("colors.accent.500") 70%); border: 1px solid theme("colors.accent.400"); padding: 3px; margin-top: 8px; }
+.gift-card-chip span { display: block; height: 100%; border: 1px solid theme("colors.accent.600"); border-radius: 2px; }
+.gift-card-brand { font-size: clamp(12px,1.25vw,18px); font-weight: 700; line-height: 1.2; color: white; margin-top: 8px; overflow-wrap: anywhere; }
+.gift-card-bottom { display: flex; align-items: end; justify-content: space-between; gap: 4px; }
+.gift-card-digits { color: theme("colors.brand.100"); font-size: 10px; letter-spacing: 1px; white-space: nowrap; }
+.gift-card-value { text-align: right; white-space: nowrap; font-size: clamp(22px,2.4vw,36px); font-weight: 800; line-height: 1; color: theme("colors.accent.400"); }
+.gift-card-value small { display: block; font: 6px/1.5 sans-serif; letter-spacing: 2px; color: theme("colors.brand.100"); }
+.catalog-amount { width: 100%; padding: 9px 12px; border: 1px solid theme("colors.brand.100"); background: white; color: theme("colors.brand.900"); border-radius: 8px; margin-bottom: 9px; }
+.catalog-buy { display: block; width: 100%; border-radius: 9px; background: theme("colors.accent.500"); color: theme("colors.brand.900"); font-size: 14px; font-weight: 700; padding: 11px 8px; box-shadow: 0 4px 12px rgb(16 41 74 / 8%); transition: filter .2s, transform .2s; }
+.catalog-buy:hover { background: theme("colors.accent.400"); transform: translateY(-2px); }
+.catalog-buy:focus-visible, .catalog-amount:focus-visible, .catalog-search:focus-visible { outline: 2px solid theme("colors.brand.500"); outline-offset: 4px; }
+@media (max-width: 1023px) { .catalog-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+@media (max-width: 767px) { .catalog-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 16px; } .gift-card-logo { font-size: 12px; } .gift-card-brand { font-size: 14px; } .gift-card-value { font-size: 28px; } .gift-card-digits { font-size: 8px; letter-spacing: 0; } .gift-card-label { font-size: 6px; } }
+@media (max-width: 479px) { .catalog-grid { grid-template-columns: minmax(0,1fr); gap: 28px; } .gift-card-logo { font-size: 16px; } .gift-card-brand { font-size: 20px; } .gift-card-value { font-size: 38px; } .gift-card-label { font-size: 9px; } .gift-card-digits { font-size: 12px; } .catalog-item h3 { min-height: 0; } }
+
+/* Motion stays decorative: content remains visible if JavaScript is unavailable. */
+html { scroll-behavior: smooth; }
+.hero-section { position: relative; overflow: hidden; }
+.hero-section::before { content: ""; position: absolute; width: 320px; height: 320px; border-radius: 50%; right: -100px; top: -180px; background: theme("colors.brand.100"); opacity: .45; pointer-events: none; }
+.hero-section > div { position: relative; }
+.hero-card { animation: hero-arrival .8s ease-out both; }
+.feature-card, .comment-card { transition: transform .25s ease, box-shadow .25s ease; }
+.gift-card { transition: transform .3s ease, box-shadow .3s ease; }
+.btn { transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease; }
+.btn:active:not(:disabled), .catalog-buy:active { transform: scale(.98); }
+@keyframes hero-arrival { from { opacity: 0; transform: translateY(20px) rotate(-5deg); } to { opacity: 1; transform: translateY(0) rotate(-3deg); } }
+@keyframes card-glint { from { transform: translateX(-150%) rotate(25deg); } to { transform: translateX(220%) rotate(25deg); } }
+@media (hover: hover) and (pointer: fine) {
+  .feature-card:hover, .comment-card:hover { transform: translateY(-5px); box-shadow: 0 12px 24px rgb(16 41 74 / 8%); }
+  .catalog-item:hover .gift-card { transform: translateY(-5px) rotate(-1deg); box-shadow: 0 20px 32px rgb(16 41 74 / 22%); }
+  .catalog-item:hover .gift-card::after, .hero-card:hover .gift-card::after { animation: card-glint .9s ease-in-out; }
+  .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 16px rgb(16 41 74 / 12%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .feature-card:hover, .comment-card:hover, .catalog-item:hover .gift-card, .btn:hover, .btn:active, .catalog-buy:hover, .catalog-buy:active { transform: none; }
+}
+
+.comments-viewport { display: flex; overflow-x: auto; overflow-y: hidden; padding: 8px 0 20px; scroll-behavior: auto; scrollbar-width: thin; scrollbar-color: theme("colors.brand.500") theme("colors.brand.50"); border-radius: 16px; }
+.comments-viewport:focus-visible { outline: 2px solid theme("colors.brand.500"); outline-offset: 5px; }
+.comments-group { display: flex; flex: none; gap: 20px; padding-right: 20px; }
+.comments-group .comment-card { flex: 0 0 auto; width: 340px; max-width: 78vw; }
+@media (prefers-reduced-motion: reduce) {
+  .comments-copy { display: none; }
+}
