@@ -81,3 +81,7 @@ html { scroll-behavior: smooth; }
 .language-option { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 8px; font-size: 14px; color: theme("colors.stone.700"); text-align: left; }
 .language-option:hover, .language-option[aria-pressed="true"] { color: theme("colors.brand.900"); background: theme("colors.brand.50"); }
 .language-trigger:focus-visible, .language-option:focus-visible { outline: 2px solid theme("colors.brand.500"); outline-offset: 3px; }
+
+.catalog-card-preview { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid theme("colors.brand.100"); border-radius: 17px; background: white; box-shadow: 0 8px 20px rgb(16 41 74 / 7%); }
+.catalog-card-artwork { position: absolute; inset: 10px 12px 42px; }
+.catalog-card-price { position: absolute; right: 12px; bottom: 9px; color: theme("colors.brand.900"); font-size: clamp(18px, 2vw, 24px); font-weight: 800; line-height: 1.2; white-space: nowrap; }

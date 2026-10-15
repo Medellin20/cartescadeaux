@@ -3,7 +3,7 @@
 import { T, useLanguage } from "@/components/LanguageProvider";
 import { useState } from "react";
 import { CARD_BRANDS, CARD_AMOUNTS } from "@/lib/catalog";
-import GiftCardPreview from "./GiftCardPreview";
+import CatalogCardPreview from "./CatalogCardPreview";
 import AmountForm from "./AmountForm";
 
 export default function CardCatalog() {
@@ -25,7 +25,7 @@ export default function CardCatalog() {
             {brands.map((brand) => {
               const amount = amounts[brand] ?? Math.min(...CARD_AMOUNTS);
               return <article key={brand} className="catalog-item">
-                <GiftCardPreview brand={brand} amount={amount} />
+                <CatalogCardPreview brand={brand} amount={amount} />
                 <h3><T>{brand}</T></h3>
                 <label className="sr-only" htmlFor={`amount-${CARD_BRANDS.indexOf(brand)}`}><T>Montant pour</T>{" "}<T>{brand}</T></label>
                 <select id={`amount-${CARD_BRANDS.indexOf(brand)}`} className="catalog-amount" value={amount} onChange={(e) => setAmounts({ ...amounts, [brand]: Number(e.target.value) })}>{CARD_AMOUNTS.map((value) => <option key={value} value={value}>{value.toLocaleString("fr-FR")} €</option>)}</select>
