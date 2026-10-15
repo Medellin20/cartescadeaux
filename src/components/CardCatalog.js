@@ -23,7 +23,7 @@ export default function CardCatalog() {
           <div className="catalog-heading"><div><p className="catalog-eyebrow"><T>28 enseignes · De 20 à 1 000 €</T></p><h2><T>Choisissez votre carte cadeau</T></h2><p><T>Vos marques préférées, un montant à votre choix.</T></p></div><div><label className="sr-only" htmlFor="catalog-search"><T>Rechercher une carte</T></label><input id="catalog-search" type="search" className="catalog-search" placeholder={t("Rechercher une enseigne…")} value={search} onChange={(e) => setSearch(e.target.value)} /></div></div>
           <div className="catalog-grid">
             {brands.map((brand) => {
-              const amount = amounts[brand] || 50;
+              const amount = amounts[brand] ?? Math.min(...CARD_AMOUNTS);
               return <article key={brand} className="catalog-item">
                 <GiftCardPreview brand={brand} amount={amount} />
                 <h3><T>{brand}</T></h3>
