@@ -29,8 +29,27 @@ SumUp doit pouvoir appeler votre webhook : lancez un tunnel HTTPS (`ngrok http 3
 - Débits/crédits atomiques via la fonction SQL `adjust_card` (solde jamais négatif).
 - Limiteur de débit en mémoire : en production multi-instances, utilisez Redis/Upstash.
 
-## Déploiement (Vercel)
-Ajoutez les variables de `.env.example` dans les réglages du projet, avec `SITE_URL=https://votre-domaine`.
+## Déploiement (Netlify)
+
+Reliez le dépôt Git au site Netlify. Le fichier `netlify.toml` définit la commande
+`npm run build`, le dossier publié `.next` et Node.js 22. Le répertoire de base
+doit être la racine de ce projet, où se trouve `package.json`.
+Netlify détecte Next.js et installe automatiquement son adaptateur pour les pages,
+les routes API et le middleware. Un dépôt manuel des sources ou du dossier `.next`
+par glisser-déposer ne remplace pas cette compilation.
+
+Ajoutez les variables de `.env.example` dans les variables d'environnement du site
+Netlify, accessibles à la compilation et aux fonctions, avec
+`SITE_URL=https://cartescadeaux.netlify.app`. Le fichier `.env` local n'est pas
+transmis par Git.
+
+Après avoir poussé cette configuration, relancez un déploiement de production
+depuis Netlify. Si la page d'accueil affiche encore « Page not found », vérifiez
+dans le journal du déploiement que la compilation Next.js et son adaptateur ont
+bien été exécutés et que le dépôt et la branche publiés sont les bons.
+
+Pour Vercel, ajoutez les mêmes variables dans les réglages du projet, avec
+`SITE_URL=https://votre-domaine`.
 
 ## Catalogue des enseignes
 
