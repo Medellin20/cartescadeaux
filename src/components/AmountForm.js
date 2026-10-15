@@ -3,7 +3,7 @@
 import { T, useLanguage } from "@/components/LanguageProvider";
 import { useState } from "react";
 import { CARD_AMOUNTS } from "@/lib/catalog";
-import GiftCardPreview from "./GiftCardPreview";
+import CatalogCardPreview from "./CatalogCardPreview";
 import { CARD_PAYMENT_ENABLED } from "@/lib/payment";
 
 const PRESETS = CARD_AMOUNTS;
@@ -41,7 +41,7 @@ export default function AmountForm({ brand, initialAmount = 100, initialQuantity
   return (
     <div className="grid items-start gap-10 lg:grid-cols-2">
       <div className="lg:sticky lg:top-24">
-        <GiftCardPreview brand={brand} amount={valid ? value : NaN} />
+        <CatalogCardPreview brand={brand} amount={valid ? value : NaN} sizes="(max-width: 639px) calc(100vw - 32px), (max-width: 1023px) calc(100vw - 48px), (max-width: 1151px) calc((100vw - 88px) / 2), 532px" />
         <p className="mt-4 text-sm text-stone-600"><T>Livraison instantanée par e-mail après confirmation du paiement.</T></p>
       </div>
 
