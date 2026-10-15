@@ -72,3 +72,12 @@ html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   .comments-copy { display: none; }
 }
+
+/* The language control remains reachable outside the collapsed navigation. */
+.language-switcher { position: relative; flex-shrink: 0; }
+.language-trigger { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; padding: 8px 10px; border: 1px solid theme("colors.stone.200"); border-radius: 999px; color: theme("colors.stone.600"); background: white; }
+.language-trigger:hover, .language-trigger[aria-expanded="true"] { color: theme("colors.brand.900"); background: theme("colors.brand.50"); border-color: theme("colors.brand.100"); }
+.language-options { position: absolute; top: calc(100% + 10px); right: 0; width: 192px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 88px); overflow-y: auto; padding: 8px; border: 1px solid theme("colors.stone.200"); border-radius: 16px; background: white; box-shadow: 0 12px 32px rgb(16 41 74 / 12%); }
+.language-option { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 44px; padding: 10px 12px; border-radius: 8px; font-size: 14px; color: theme("colors.stone.700"); text-align: left; }
+.language-option:hover, .language-option[aria-pressed="true"] { color: theme("colors.brand.900"); background: theme("colors.brand.50"); }
+.language-trigger:focus-visible, .language-option:focus-visible { outline: 2px solid theme("colors.brand.500"); outline-offset: 3px; }

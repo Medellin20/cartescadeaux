@@ -16,7 +16,7 @@
 SumUp doit pouvoir appeler votre webhook : lancez un tunnel HTTPS (`ngrok http 3000`) et mettez l'URL dans `SITE_URL`.
 
 ## Flux de paiement
-1. `POST /api/checkout` valide le montant (50–1000 €) côté serveur, crée la commande (`pending`) puis un checkout SumUp hébergé.
+1. `POST /api/checkout` valide le montant (20–1000 €) côté serveur, crée la commande (`pending`) puis un checkout SumUp hébergé.
 2. Le client paie chez SumUp, puis revient sur `/merci?order=<uuid>`.
 3. Le **serveur** relit le checkout via l'API SumUp (webhook `POST /api/webhooks/sumup?token=…` et page `/merci`), vérifie statut `PAID`, montant, devise, référence.
 4. Seulement alors : commande `paid`, carte créée (code aléatoire), e-mail envoyé **une seule fois** (traitement idempotent).
@@ -53,9 +53,9 @@ Pour Vercel, ajoutez les mêmes variables dans les réglages du projet, avec
 
 ## Catalogue des enseignes
 
-Le catalogue contient 28 enseignes et propose les montants 50, 100, 150, 200,
+Le catalogue contient 28 enseignes et propose les montants 20, 25, 50, 100, 150, 200,
 250, 500 et 1 000 €. Le formulaire permet aussi un montant entier personnalisé
-entre 50 et 1 000 €. L'enseigne est validée côté serveur et enregistrée dans
+entre 20 et 1 000 €. L'enseigne est validée côté serveur et enregistrée dans
 `orders.brand`, puis affichée dans les dernières commandes de l'administration.
 Pour une base déjà créée, appliquer `supabase/migrations/20261015_add_order_brand.sql`
 avant le déploiement. Une nouvelle base utilise directement `supabase/schema.sql`.
@@ -68,3 +68,9 @@ est nécessaire pour commercialiser et livrer ces cartes de marque.
 
 Chaque commande accepte de 1 à 20 cartes du même montant. Le total correspond au montant unitaire multiplié par la quantité ; chaque carte reçoit son propre code.
 Pour une base existante, appliquer `supabase/migrations/20261015_add_order_quantity.sql` avant de déployer cette version. Les commandes existantes conservent une quantité de 1. Le paiement reste désactivé tant que la configuration SumUp n’est pas activée.
+
+### Langues du site
+
+Le bouton globe de l’en-tête propose le français, l’anglais, l’allemand, l’espagnol, l’italien et le néerlandais. Le choix est conservé dans le stockage local du navigateur. Les traductions de l’interface publique sont intégrées dans `src/lib/i18n/translations.json`, sans service de traduction externe à l’exécution. Pour ajouter un texte, utiliser `T` ou `t` depuis `LanguageProvider` et ajouter sa traduction dans les cinq dictionnaires (le français est le texte source). Conserver les paramètres entre accolades, les marques, les codes et les valeurs envoyées aux API. L’administration, les e-mails et la page de paiement SumUp suivent leur propre langue.
+
+Pour autoriser les montants de 20 € et 25 € dans une base existante, appliquer `supabase/migrations/20261015_add_20_25_amounts.sql` après la migration des quantités.

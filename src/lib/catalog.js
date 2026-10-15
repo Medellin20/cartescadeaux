@@ -5,4 +5,4 @@ export const CARD_BRANDS = [
   "Battle.net", "League of Legends", "Valorant", "World of Warcraft",
   "PUBG Mobile", "Minecraft", "Meta Quest", "Amazon", "Fnac", "Zalando", "Nike", "Adidas",
 ];
-export const CARD_AMOUNTS = [50, 100, 150, 200, 250, 500, 1000];
+export const CARD_AMOUNTS = [20, 25, 50, 100, 150, 200, 250, 500, 1000];

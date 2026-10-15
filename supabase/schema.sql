@@ -4,7 +4,7 @@ create table public.orders (
   id uuid primary key default gen_random_uuid(),
   quantity int not null default 1 check (quantity between 1 and 20),
   amount_cents int not null,
-  constraint orders_amount_cents_check check (amount_cents between 5000 * quantity and 100000 * quantity and amount_cents % (100 * quantity) = 0),
+  constraint orders_amount_cents_check check (amount_cents between 2000 * quantity and 100000 * quantity and amount_cents % (100 * quantity) = 0),
   currency text not null default 'EUR',
   brand text,
   buyer_name text,

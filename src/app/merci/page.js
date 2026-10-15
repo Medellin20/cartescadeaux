@@ -1,3 +1,4 @@
+import { T } from "@/components/LanguageProvider";
 import Link from "next/link";
 import { fulfillOrder } from "@/lib/fulfill";
 import { maskEmail } from "@/lib/format";
@@ -15,7 +16,9 @@ export default async function Merci({ searchParams }) {
 
   const views = {
     paid: { icon: "✅", title: "Paiement confirmé", text: r.emailed
-      ? `${r.order?.quantity > 1 ? "Vos cartes cadeaux ont été envoyées" : "Votre carte cadeau a été envoyée"} à ${maskEmail(r.order?.buyer_email)}${r.order?.recipient_email ? " et au destinataire" : ""}. Pensez à vérifier vos courriers indésirables.`
+      ? <T values={{ email: maskEmail(r.order?.buyer_email) }} translatedValues={{ recipient: r.order?.recipient_email ? " et au destinataire" : "" }}>{r.order?.quantity > 1
+          ? "Vos cartes cadeaux ont été envoyées à {email}{recipient}. Pensez à vérifier vos courriers indésirables."
+          : "Votre carte cadeau a été envoyée à {email}{recipient}. Pensez à vérifier vos courriers indésirables."}</T>
       : "Votre paiement est bien confirmé. L’envoi de l’e-mail rencontre un retard ; vous le recevrez très bientôt (sinon, contactez-nous)." },
     pending: { icon: "⏳", title: "Vérification du paiement…", text: "Nous attendons la confirmation de SumUp. Cette page s’actualise automatiquement." },
     failed: { icon: "❌", title: "Paiement refusé", text: "Le paiement n’a pas abouti. Aucun montant n’a été débité. Vous pouvez réessayer." },
@@ -28,10 +31,10 @@ export default async function Merci({ searchParams }) {
     <section className="container-p max-w-xl py-20 text-center">
       {r.status === "pending" && <Refresher />}
       <div className="text-6xl">{v.icon}</div>
-      <h1 className="mt-4 text-3xl font-extrabold text-brand-900">{v.title}</h1>
-      <p className="mt-3 text-stone-600">{v.text}</p>
-      {id && <p className="mt-2 text-xs text-stone-400">Commande : {id}</p>}
-      <Link href="/" className="btn-dark mt-8">Retour à l’accueil</Link>
+      <h1 className="mt-4 text-3xl font-extrabold text-brand-900"><T>{v.title}</T></h1>
+      <p className="mt-3 text-stone-600"><T>{v.text}</T></p>
+      {id && <p className="mt-2 text-xs text-stone-400"><T>Commande :</T>{" "}{id}</p>}
+      <Link href="/" className="btn-dark mt-8"><T>Retour à l’accueil</T></Link>
     </section>
   );
 }

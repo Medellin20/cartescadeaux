@@ -19,7 +19,7 @@ export async function POST(req) {
   const brand = b.brand;
   if (!CARD_BRANDS.includes(brand)) return err("Veuillez choisir une carte du catalogue.");
   const amount = Number(b.amount);
-  if (!Number.isInteger(amount) || amount < 50 || amount > 1000) return err("Montant invalide (50 € à 1 000 €).");
+  if (!Number.isInteger(amount) || amount < 20 || amount > 1000) return err("Montant invalide (20 € à 1 000 €).");
   const quantity = b.quantity === undefined ? 1 : Number(b.quantity);
   if (!Number.isInteger(quantity) || quantity < 1 || quantity > 20) return err("Quantité invalide (1 à 20 cartes).");
   const buyerEmail = clean(b.buyerEmail, 200);
