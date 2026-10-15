@@ -1,4 +1,4 @@
-# Carte cadeau — Cartes cadeaux (Next.js 14 · React · Tailwind · Supabase · SumUp)
+# Cartes cadeaux — Cartes cadeaux (Next.js 14 · React · Tailwind · Supabase · SumUp)
 
 ## Installation
 

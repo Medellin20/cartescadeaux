@@ -1,5 +1,5 @@
 import BalanceForm from "@/components/BalanceForm";
-export const metadata = { title: "Vérifier mon solde — Carte cadeau" };
+export const metadata = { title: "Vérifier mon solde — Cartes cadeaux" };
 export default function Solde() {
   return (
     <section className="container-p max-w-lg py-14">

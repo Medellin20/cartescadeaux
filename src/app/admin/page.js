@@ -5,7 +5,7 @@ import { euro } from "@/lib/format";
 import AdminCards from "@/components/AdminCards";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Administration — Carte cadeau", robots: { index: false, follow: false } };
+export const metadata = { title: "Administration — Cartes cadeaux", robots: { index: false, follow: false } };
 
 export default async function Admin({ searchParams }) {
   if (!(await getSession())) redirect("/admin/login"); // double contrôle en plus du middleware
@@ -42,7 +42,7 @@ export default async function Admin({ searchParams }) {
         <table className="w-full text-left text-sm">
           <thead className="bg-stone-100 text-xs uppercase text-stone-500"><tr><th className="p-3">Date</th><th className="p-3">Acheteur</th><th className="p-3">Enseigne</th><th className="p-3">Montant</th><th className="p-3">Statut</th></tr></thead>
           <tbody>{orders.map((o) => (
-            <tr key={o.id} className="border-t border-stone-100"><td className="p-3">{new Date(o.created_at).toLocaleString("fr-FR")}</td><td className="p-3">{o.buyer_email}</td><td className="p-3">{o.brand || "Carte cadeau"}</td><td className="p-3">{euro(o.amount_cents)}</td><td className="p-3">{o.status}</td></tr>
+            <tr key={o.id} className="border-t border-stone-100"><td className="p-3">{new Date(o.created_at).toLocaleString("fr-FR")}</td><td className="p-3">{o.buyer_email}</td><td className="p-3">{o.brand || "Cartes cadeaux"}</td><td className="p-3">{euro(o.amount_cents)}</td><td className="p-3">{o.status}</td></tr>
           ))}</tbody>
         </table>
       </div>

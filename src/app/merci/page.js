@@ -4,7 +4,7 @@ import { maskEmail } from "@/lib/format";
 import Refresher from "@/components/Refresher";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Confirmation — Carte cadeau", robots: { index: false } };
+export const metadata = { title: "Confirmation — Cartes cadeaux", robots: { index: false } };
 
 const UUID = /^[0-9a-f-]{36}$/i;
 

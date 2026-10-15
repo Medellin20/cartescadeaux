@@ -7,7 +7,7 @@ export async function sendGiftCardEmail({ to, code, amountCents, recipientName, 
   const html = `<!doctype html><html lang="fr"><body style="margin:0;background:#f5f5f4;font-family:Arial,sans-serif;color:#1c1917">
   <div style="max-width:560px;margin:0 auto;padding:24px">
     <div style="background:#10294a;color:#fff;padding:24px;border-radius:16px 16px 0 0;text-align:center">
-      <h1 style="margin:0;font-size:22px">Carte cadeau</h1><p style="margin:6px 0 0;opacity:.8">Votre carte cadeau</p></div>
+      <h1 style="margin:0;font-size:22px">Cartes cadeaux</h1><p style="margin:6px 0 0;opacity:.8">Votre carte cadeau</p></div>
     <div style="background:#fff;padding:28px;border-radius:0 0 16px 16px">
       <p>Bonjour${recipientName ? " " + esc(recipientName) : ""},</p>
       <p>${senderName ? esc(senderName) + " vous offre" : "Voici"} une carte cadeau d'une valeur de <strong>${euro(amountCents)}</strong>.</p>

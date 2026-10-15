@@ -15,7 +15,7 @@ export default function Header() {
     <header className="sticky top-0 z-40 border-b border-stone-200 bg-white/90 backdrop-blur">
       <div className="container-p flex h-16 items-center justify-between">
         <Link href="/" className="text-xl font-extrabold tracking-tight text-brand-900">
-          Carte <span className="text-accent-600">cadeau</span>
+          Cartes <span className="text-accent-600">cadeaux</span>
         </Link>
         <nav className="hidden items-center gap-7 md:flex">
           {links.map((l) => (
