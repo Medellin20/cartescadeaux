@@ -15,7 +15,7 @@ export default async function Merci({ searchParams }) {
 
   const views = {
     paid: { icon: "✅", title: "Paiement confirmé", text: r.emailed
-      ? `Votre carte cadeau a été envoyée à ${maskEmail(r.order?.buyer_email)}${r.order?.recipient_email ? " et au destinataire" : ""}. Pensez à vérifier vos courriers indésirables.`
+      ? `${r.order?.quantity > 1 ? "Vos cartes cadeaux ont été envoyées" : "Votre carte cadeau a été envoyée"} à ${maskEmail(r.order?.buyer_email)}${r.order?.recipient_email ? " et au destinataire" : ""}. Pensez à vérifier vos courriers indésirables.`
       : "Votre paiement est bien confirmé. L’envoi de l’e-mail rencontre un retard ; vous le recevrez très bientôt (sinon, contactez-nous)." },
     pending: { icon: "⏳", title: "Vérification du paiement…", text: "Nous attendons la confirmation de SumUp. Cette page s’actualise automatiquement." },
     failed: { icon: "❌", title: "Paiement refusé", text: "Le paiement n’a pas abouti. Aucun montant n’a été débité. Vous pouvez réessayer." },

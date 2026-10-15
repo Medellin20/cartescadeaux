@@ -6,8 +6,9 @@ import { CARD_PAYMENT_ENABLED } from "@/lib/payment";
 
 const PRESETS = CARD_AMOUNTS;
 
-export default function AmountForm({ brand, initialAmount = 100 }) {
+export default function AmountForm({ brand, initialAmount = 100, initialQuantity = 1 }) {
   const [amount, setAmount] = useState(initialAmount);
+  const [quantity, setQuantity] = useState(initialQuantity);
   const [custom, setCustom] = useState("");
   const [f, setF] = useState({ buyerName: "", buyerEmail: "", recipientName: "", recipientEmail: "", message: "", website: "" });
   const [loading, setLoading] = useState(false);
@@ -24,7 +25,7 @@ export default function AmountForm({ brand, initialAmount = 100 }) {
     if (!valid) return setError("Le montant doit être un nombre entier entre 50 € et 1 000 €.");
     setLoading(true);
     try {
-      const r = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, brand, amount: value }) });
+      const r = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, brand, amount: value, quantity }) });
       const d = await r.json();
       if (!r.ok || !d.url) throw new Error(d.error || "Une erreur est survenue.");
       window.location.href = d.url;
@@ -58,6 +59,13 @@ export default function AmountForm({ brand, initialAmount = 100 }) {
           </div>
         </fieldset>
 
+        <div>
+          <label className="label" htmlFor="quantity">Quantité de cartes</label>
+          <select id="quantity" className="input" value={quantity} onChange={(e) => setQuantity(Number(e.target.value))}>{Array.from({ length: 20 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n}</option>)}</select>
+          <p className="mt-3 font-semibold" aria-live="polite">{valid ? `${quantity} × ${value.toLocaleString("fr-FR")} € = ${(value * quantity).toLocaleString("fr-FR")} €` : "Choisissez un montant valide."}</p>
+          <p className="mt-1 text-sm text-stone-600">Un code distinct par carte, envoyé aux adresses indiquées ci-dessous.</p>
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2">
           <div><label className="label" htmlFor="bn">Votre nom</label><input id="bn" className="input" value={f.buyerName} onChange={set("buyerName")} maxLength={100} /></div>
           <div><label className="label" htmlFor="be">Votre e-mail *</label><input id="be" type="email" required className="input" value={f.buyerEmail} onChange={set("buyerEmail")} /></div>
@@ -79,7 +87,7 @@ export default function AmountForm({ brand, initialAmount = 100 }) {
         </div>
         {error && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-700">{error}</p>}
         <button className="btn-primary w-full text-lg disabled:cursor-not-allowed" disabled={loading || !CARD_PAYMENT_ENABLED} aria-describedby="payment-availability">
-          {!CARD_PAYMENT_ENABLED ? "Paiement par carte — bientôt disponible" : loading ? "Redirection vers le paiement…" : `Payer ${valid ? value + " €" : ""} en toute sécurité`}
+          {!CARD_PAYMENT_ENABLED ? "Paiement par carte — bientôt disponible" : loading ? "Redirection vers le paiement…" : `Payer ${valid ? (value * quantity).toLocaleString("fr-FR") + " €" : ""} en toute sécurité`}
         </button>
         <p className="text-center text-xs text-stone-500">{CARD_PAYMENT_ENABLED ? "🔒 Paiement sécurisé SumUp. Le code est envoyé par e-mail une fois le paiement confirmé." : "Aucune commande ni aucun paiement ne sont enregistrés pour le moment."}</p>
       </form>

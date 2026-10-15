@@ -17,7 +17,7 @@ export default async function Admin({ searchParams }) {
   const [{ data: cards = [] }, { data: all = [] }, { data: orders = [] }] = await Promise.all([
     cardsQ,
     supa.from("gift_cards").select("initial_cents,balance_cents"),
-    supa.from("orders").select("id,status,brand,amount_cents,buyer_email,created_at").order("created_at", { ascending: false }).limit(30),
+    supa.from("orders").select("id,status,brand,quantity,amount_cents,buyer_email,created_at").order("created_at", { ascending: false }).limit(30),
   ]);
   const sold = all.reduce((s, c) => s + c.initial_cents, 0);
   const outstanding = all.reduce((s, c) => s + c.balance_cents, 0);
@@ -40,9 +40,9 @@ export default async function Admin({ searchParams }) {
       <h2 className="mb-3 mt-10 text-lg font-bold">Dernières commandes</h2>
       <div className="overflow-x-auto rounded-2xl bg-white ring-1 ring-stone-200">
         <table className="w-full text-left text-sm">
-          <thead className="bg-stone-100 text-xs uppercase text-stone-500"><tr><th className="p-3">Date</th><th className="p-3">Acheteur</th><th className="p-3">Enseigne</th><th className="p-3">Montant</th><th className="p-3">Statut</th></tr></thead>
+          <thead className="bg-stone-100 text-xs uppercase text-stone-500"><tr><th className="p-3">Date</th><th className="p-3">Acheteur</th><th className="p-3">Enseigne</th><th className="p-3">Quantité</th><th className="p-3">Total</th><th className="p-3">Statut</th></tr></thead>
           <tbody>{orders.map((o) => (
-            <tr key={o.id} className="border-t border-stone-100"><td className="p-3">{new Date(o.created_at).toLocaleString("fr-FR")}</td><td className="p-3">{o.buyer_email}</td><td className="p-3">{o.brand || "Cartes cadeaux"}</td><td className="p-3">{euro(o.amount_cents)}</td><td className="p-3">{o.status}</td></tr>
+            <tr key={o.id} className="border-t border-stone-100"><td className="p-3">{new Date(o.created_at).toLocaleString("fr-FR")}</td><td className="p-3">{o.buyer_email}</td><td className="p-3">{o.brand || "Cartes cadeaux"}</td><td className="p-3">{o.quantity || 1}</td><td className="p-3">{euro(o.amount_cents)}</td><td className="p-3">{o.status}</td></tr>
           ))}</tbody>
         </table>
       </div>

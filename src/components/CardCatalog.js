@@ -6,10 +6,11 @@ import AmountForm from "./AmountForm";
 
 export default function CardCatalog() {
   const [amounts, setAmounts] = useState({});
+  const [quantities, setQuantities] = useState({});
   const [selection, setSelection] = useState(null);
   const [search, setSearch] = useState("");
-  function choose(brand, amount) {
-    setSelection({ brand, amount });
+  function choose(brand, amount, quantity) {
+    setSelection({ brand, amount, quantity });
     requestAnimationFrame(() => document.getElementById("personnaliser")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }));
   }
   const brands = CARD_BRANDS.filter((brand) => brand.toLocaleLowerCase("fr").includes(search.toLocaleLowerCase("fr").trim()));
@@ -21,19 +22,22 @@ export default function CardCatalog() {
           <div className="catalog-grid">
             {brands.map((brand) => {
               const amount = amounts[brand] || 50;
+              const quantity = quantities[brand] || 1;
               return <article key={brand} className="catalog-item">
                 <GiftCardPreview brand={brand} amount={amount} />
                 <h3>{brand}</h3>
                 <label className="sr-only" htmlFor={`amount-${CARD_BRANDS.indexOf(brand)}`}>Montant pour {brand}</label>
                 <select id={`amount-${CARD_BRANDS.indexOf(brand)}`} className="catalog-amount" value={amount} onChange={(e) => setAmounts({ ...amounts, [brand]: Number(e.target.value) })}>{CARD_AMOUNTS.map((value) => <option key={value} value={value}>{value.toLocaleString("fr-FR")} €</option>)}</select>
-                <button type="button" className="catalog-buy" onClick={() => choose(brand, amount)}>Acheter — {amount.toLocaleString("fr-FR")} €<span className="sr-only"> · {brand}</span></button>
+                <label className="block mb-1 text-sm" htmlFor={`quantity-${CARD_BRANDS.indexOf(brand)}`}>Quantité</label>
+                <select id={`quantity-${CARD_BRANDS.indexOf(brand)}`} aria-label={`Quantité pour ${brand}`} className="catalog-amount" value={quantity} onChange={(e) => setQuantities({ ...quantities, [brand]: Number(e.target.value) })}>{Array.from({ length: 20 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n === 1 ? "carte" : "cartes"}</option>)}</select>
+                <button type="button" className="catalog-buy" onClick={() => choose(brand, amount, quantity)}>Acheter — {(amount * quantity).toLocaleString("fr-FR")} €<span className="sr-only"> · {brand}</span></button>
               </article>;
             })}
           </div>
           {!brands.length && <p className="py-12 text-center text-stone-600" role="status">Aucune carte ne correspond à votre recherche.</p>}
         </div>
       </section>
-      {selection && <section id="personnaliser" className="container-p scroll-mt-24 py-14"><h2 className="mb-8 text-3xl font-extrabold text-brand-900">Votre carte {selection.brand}</h2><AmountForm key={`${selection.brand}-${selection.amount}`} brand={selection.brand} initialAmount={selection.amount} /></section>}
+      {selection && <section id="personnaliser" className="container-p scroll-mt-24 py-14"><h2 className="mb-8 text-3xl font-extrabold text-brand-900">Votre carte {selection.brand}</h2><AmountForm key={`${selection.brand}-${selection.amount}-${selection.quantity}`} brand={selection.brand} initialAmount={selection.amount} initialQuantity={selection.quantity} /></section>}
     </>
   );
 }

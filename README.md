@@ -63,3 +63,8 @@ avant le déploiement. Une nouvelle base utilise directement `supabase/schema.sq
 Le mécanisme existant émet des codes internes P2P. Il ne fournit pas de codes
 redeemables auprès des enseignes du catalogue : une intégration avec un fournisseur
 est nécessaire pour commercialiser et livrer ces cartes de marque.
+
+### Quantité de cartes cadeaux
+
+Chaque commande accepte de 1 à 20 cartes du même montant. Le total correspond au montant unitaire multiplié par la quantité ; chaque carte reçoit son propre code.
+Pour une base existante, appliquer `supabase/migrations/20261015_add_order_quantity.sql` avant de déployer cette version. Les commandes existantes conservent une quantité de 1. Le paiement reste désactivé tant que la configuration SumUp n’est pas activée.

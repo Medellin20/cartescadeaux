@@ -20,6 +20,8 @@ export async function POST(req) {
   if (!CARD_BRANDS.includes(brand)) return err("Veuillez choisir une carte du catalogue.");
   const amount = Number(b.amount);
   if (!Number.isInteger(amount) || amount < 50 || amount > 1000) return err("Montant invalide (50 € à 1 000 €).");
+  const quantity = b.quantity === undefined ? 1 : Number(b.quantity);
+  if (!Number.isInteger(quantity) || quantity < 1 || quantity > 20) return err("Quantité invalide (1 à 20 cartes).");
   const buyerEmail = clean(b.buyerEmail, 200);
   const recipientEmail = clean(b.recipientEmail, 200);
   if (!EMAIL.test(buyerEmail)) return err("Adresse e-mail invalide.");
@@ -28,7 +30,8 @@ export async function POST(req) {
   const supa = db();
   const { data: order, error } = await supa.from("orders").insert({
     brand,
-    amount_cents: amount * 100,
+    quantity,
+    amount_cents: amount * quantity * 100,
     buyer_name: clean(b.buyerName, 100) || null,
     buyer_email: buyerEmail,
     recipient_name: clean(b.recipientName, 100) || null,
@@ -41,8 +44,8 @@ export async function POST(req) {
     const site = process.env.SITE_URL;
     const checkout = await createCheckout({
       reference: order.id,
-      amountCents: amount * 100,
-      description: `Carte cadeau ${brand} ${amount} €`,
+      amountCents: amount * quantity * 100,
+      description: `${quantity} carte(s) cadeau ${brand} de ${amount} €`,
       returnUrl: `${site}/api/webhooks/sumup?token=${process.env.SUMUP_WEBHOOK_SECRET}`,
       redirectUrl: `${site}/merci?order=${order.id}`,
     });

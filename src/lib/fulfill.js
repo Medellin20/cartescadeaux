@@ -8,7 +8,7 @@ import { sendGiftCardEmail } from "./email";
  * Traitement idempotent d'une commande. Appelé par le webhook ET par la page de retour.
  * 1) Vérifie le paiement auprès de SumUp (jamais sur la foi du navigateur ou du corps du webhook)
  * 2) Passe la commande en "paid" (mise à jour conditionnelle = verrou)
- * 3) Crée la carte (order_id unique => jamais en double)
+ * 3) Crée les cartes (position unique par commande)
  * 4) Envoie l'e-mail une seule fois
  */
 export async function fulfillOrder(orderId) {
@@ -45,15 +45,19 @@ export async function fulfillOrder(orderId) {
 
   if (order.status !== "paid") return { status: order.status };
 
-  // Carte (créée si absente ; la contrainte unique sur order_id empêche les doublons)
-  let { data: card } = await supa.from("gift_cards").select("*").eq("order_id", order.id).maybeSingle();
-  if (!card) {
-    const ins = await supa.from("gift_cards")
-      .insert({ code: generateCode(), order_id: order.id, initial_cents: order.amount_cents, balance_cents: order.amount_cents })
-      .select().maybeSingle();
-    card = ins.data;
-    if (!card) ({ data: card } = await supa.from("gift_cards").select("*").eq("order_id", order.id).maybeSingle());
-    if (!card) return { status: "paid", emailed: false };
+  // Une position unique par carte garantit des émissions idempotentes, même en concurrence.
+  const quantity = order.quantity || 1;
+  let { data: cards, error: cardsError } = await supa.from("gift_cards").select("*").eq("order_id", order.id);
+  if (cardsError) return { status: "paid", emailed: false, order };
+  const missing = Array.from({ length: quantity }, (_, i) => i + 1)
+    .filter((position) => !cards.some((card) => card.position === position));
+  if (missing.length) {
+    await supa.from("gift_cards").upsert(missing.map((position) => ({
+      code: generateCode(), order_id: order.id, position,
+      initial_cents: order.amount_cents / quantity, balance_cents: order.amount_cents / quantity,
+    })), { onConflict: "order_id,position", ignoreDuplicates: true });
+    ({ data: cards, error: cardsError } = await supa.from("gift_cards").select("*").eq("order_id", order.id));
+    if (cardsError || cards?.length !== quantity) return { status: "paid", emailed: false, order };
   }
 
   // E-mail : on "réserve" l'envoi, et on le libère en cas d'échec pour permettre un nouvel essai
@@ -64,7 +68,7 @@ export async function fulfillOrder(orderId) {
     try {
       const to = [...new Set([order.buyer_email, order.recipient_email].filter(Boolean))];
       await sendGiftCardEmail({
-        to, code: card.code, amountCents: card.initial_cents,
+        to, codes: cards.sort((a, b) => a.position - b.position).map((card) => card.code), amountCents: order.amount_cents / quantity,
         recipientName: order.recipient_name, senderName: order.buyer_name, message: order.message,
       });
     } catch (e) {

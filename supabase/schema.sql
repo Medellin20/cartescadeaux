@@ -2,7 +2,9 @@ create extension if not exists pgcrypto;
 
 create table public.orders (
   id uuid primary key default gen_random_uuid(),
-  amount_cents int not null check (amount_cents between 5000 and 100000),
+  quantity int not null default 1 check (quantity between 1 and 20),
+  amount_cents int not null,
+  constraint orders_amount_cents_check check (amount_cents between 5000 * quantity and 100000 * quantity and amount_cents % (100 * quantity) = 0),
   currency text not null default 'EUR',
   brand text,
   buyer_name text,
@@ -21,7 +23,9 @@ create table public.orders (
 create table public.gift_cards (
   id uuid primary key default gen_random_uuid(),
   code text unique not null,
-  order_id uuid unique references public.orders(id),
+  order_id uuid references public.orders(id),
+  position int not null default 1 check (position between 1 and 20),
+  unique (order_id, position),
   initial_cents int not null,
   balance_cents int not null check (balance_cents >= 0),
   status text not null default 'active' check (status in ('active','disabled')),
