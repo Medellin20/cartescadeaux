@@ -1,4 +1,5 @@
 import { CARD_BRANDS } from "@/lib/catalog";
+import { CARD_PAYMENT_ENABLED } from "@/lib/payment";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/supabase";
 import { createCheckout } from "@/lib/sumup";
@@ -9,6 +10,7 @@ const clean = (s, n) => String(s || "").trim().slice(0, n);
 const err = (m, status = 400) => NextResponse.json({ error: m }, { status });
 
 export async function POST(req) {
+  if (!CARD_PAYMENT_ENABLED) return err("Paiement par carte bientôt disponible.", 503);
   if (!rateLimit("checkout:" + clientIp(req), 10, 10 * 60_000)) return err("Trop de tentatives, réessayez plus tard.", 429);
   let b;
   try { b = await req.json(); } catch { return err("Requête invalide"); }

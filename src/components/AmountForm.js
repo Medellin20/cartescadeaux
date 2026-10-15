@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { CARD_AMOUNTS } from "@/lib/catalog";
 import GiftCardPreview from "./GiftCardPreview";
+import { CARD_PAYMENT_ENABLED } from "@/lib/payment";
 
 const PRESETS = CARD_AMOUNTS;
 
@@ -18,6 +19,7 @@ export default function AmountForm({ brand, initialAmount = 100 }) {
 
   async function submit(e) {
     e.preventDefault();
+    if (!CARD_PAYMENT_ENABLED) return;
     setError("");
     if (!valid) return setError("Le montant doit être un nombre entier entre 50 € et 1 000 €.");
     setLoading(true);
@@ -69,11 +71,17 @@ export default function AmountForm({ brand, initialAmount = 100 }) {
         {/* Honeypot anti-bots */}
         <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" value={f.website} onChange={set("website")} aria-hidden="true" />
 
+        <div className="rounded-xl border border-brand-100 bg-brand-50 p-4">
+          <p className="font-semibold text-brand-900">Paiement par carte</p>
+          <p id="payment-availability" className="mt-1 text-sm text-stone-600">
+            {CARD_PAYMENT_ENABLED ? "Vous serez redirigé vers SumUp pour régler votre commande." : "Bientôt disponible. Le paiement par carte sera accessible dès son activation."}
+          </p>
+        </div>
         {error && <p role="alert" className="rounded-xl bg-red-50 p-3 text-sm text-red-700">{error}</p>}
-        <button className="btn-primary w-full text-lg" disabled={loading}>
-          {loading ? "Redirection vers le paiement…" : `Payer ${valid ? value + " €" : ""} en toute sécurité`}
+        <button className="btn-primary w-full text-lg disabled:cursor-not-allowed" disabled={loading || !CARD_PAYMENT_ENABLED} aria-describedby="payment-availability">
+          {!CARD_PAYMENT_ENABLED ? "Paiement par carte — bientôt disponible" : loading ? "Redirection vers le paiement…" : `Payer ${valid ? value + " €" : ""} en toute sécurité`}
         </button>
-        <p className="text-center text-xs text-stone-500">🔒 Paiement sécurisé SumUp. Le code est envoyé par e-mail une fois le paiement confirmé.</p>
+        <p className="text-center text-xs text-stone-500">{CARD_PAYMENT_ENABLED ? "🔒 Paiement sécurisé SumUp. Le code est envoyé par e-mail une fois le paiement confirmé." : "Aucune commande ni aucun paiement ne sont enregistrés pour le moment."}</p>
       </form>
     </div>
   );
