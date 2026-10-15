@@ -20,7 +20,7 @@ export default function CardCatalog() {
     <>
       <section id="offrir" className="catalog-section scroll-mt-16">
         <div className="container-p py-14">
-          <div className="catalog-heading"><div><p className="catalog-eyebrow"><T>28 enseignes · De 20 à 1 000 €</T></p><h2><T>Choisissez votre carte cadeau</T></h2><p><T>Vos marques préférées, un montant à votre choix.</T></p></div><div><label className="sr-only" htmlFor="catalog-search"><T>Rechercher une carte</T></label><input id="catalog-search" type="search" className="catalog-search" placeholder={t("Rechercher une enseigne…")} value={search} onChange={(e) => setSearch(e.target.value)} /></div></div>
+          <div className="catalog-heading"><div><p className="catalog-eyebrow"><T>28 enseignes · De 20 à 500 €</T></p><h2><T>Choisissez votre carte cadeau</T></h2><p><T>Vos marques préférées, un montant à votre choix.</T></p></div><div><label className="sr-only" htmlFor="catalog-search"><T>Rechercher une carte</T></label><input id="catalog-search" type="search" className="catalog-search" placeholder={t("Rechercher une enseigne…")} value={search} onChange={(e) => setSearch(e.target.value)} /></div></div>
           <div className="catalog-grid">
             {brands.map((brand) => {
               const amount = amounts[brand] ?? Math.min(...CARD_AMOUNTS);

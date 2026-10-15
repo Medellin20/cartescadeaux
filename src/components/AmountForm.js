@@ -19,13 +19,13 @@ export default function AmountForm({ brand, initialAmount = 100, initialQuantity
   const set = (k) => (e) => setF({ ...f, [k]: e.target.value });
 
   const value = custom !== "" ? Number(custom) : amount;
-  const valid = Number.isInteger(value) && value >= 20 && value <= 1000;
+  const valid = Number.isInteger(value) && value >= 20 && value <= 500;
 
   async function submit(e) {
     e.preventDefault();
     if (!CARD_PAYMENT_ENABLED) return;
     setError("");
-    if (!valid) return setError("Le montant doit être un nombre entier entre 20 € et 1 000 €.");
+    if (!valid) return setError("Le montant doit être un nombre entier entre 20 € et 500 €.");
     setLoading(true);
     try {
       const r = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, brand, amount: value, quantity }) });
@@ -57,8 +57,8 @@ export default function AmountForm({ brand, initialAmount = 100, initialQuantity
             ))}
           </div>
           <div className="mt-3">
-            <label className="label" htmlFor="custom"><T>Ou saisissez un montant (20 – 1 000 €)</T></label>
-            <input id="custom" type="number" min="20" max="1000" step="1" inputMode="numeric" className="input" placeholder={t("Ex. 250")} value={custom} onChange={(e) => setCustom(e.target.value)} />
+            <label className="label" htmlFor="custom"><T>Ou saisissez un montant (20 – 500 €)</T></label>
+            <input id="custom" type="number" min="20" max="500" step="1" inputMode="numeric" className="input" placeholder={t("Ex. 250")} value={custom} onChange={(e) => setCustom(e.target.value)} />
           </div>
         </fieldset>
 

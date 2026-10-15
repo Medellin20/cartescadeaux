@@ -5,7 +5,7 @@ import CardCatalog from "@/components/CardCatalog";
 import GiftCardPreview from "@/components/GiftCardPreview";
 
 const steps = [
-  { n: "1", t: "Choisissez le montant", d: "De 20 € à 1 000 €, parmi nos montants proposés ou le vôtre." },
+  { n: "1", t: "Choisissez le montant", d: "De 20 € à 500 €, parmi nos montants proposés ou le vôtre." },
   { n: "2", t: "Payez en ligne", d: "Paiement sécurisé via SumUp, directement sur une page de paiement protégée." },
   { n: "3", t: "Recevez le code", d: "Le code est envoyé par e-mail dès que le paiement est confirmé." },
 ];
@@ -24,7 +24,7 @@ export default function Home() {
           <div data-reveal>
             <p className="mb-3 inline-block rounded-full bg-accent-400/30 px-3 py-1 text-sm font-semibold text-brand-900"><T>Cartes cadeaux</T></p>
             <h1 className="text-4xl font-extrabold leading-tight text-brand-900 sm:text-5xl"><T>Toutes vos envies, une carte cadeau</T></h1>
-            <p className="mt-4 max-w-lg text-lg text-stone-600"><T>Découvrez nos 28 cartes cadeaux : divertissement, jeux vidéo, shopping et sport. Choisissez votre enseigne et un montant de 20 € à 1 000 €.</T></p>
+            <p className="mt-4 max-w-lg text-lg text-stone-600"><T>Découvrez nos 28 cartes cadeaux : divertissement, jeux vidéo, shopping et sport. Choisissez votre enseigne et un montant de 20 € à 500 €.</T></p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/#offrir" className="btn-primary"><T>Offrir une carte cadeau</T></Link>
               <Link href="/solde" className="btn bg-white ring-1 ring-stone-300 hover:bg-stone-100"><T>Vérifier mon solde</T></Link>

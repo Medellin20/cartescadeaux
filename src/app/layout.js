@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Cartes cadeaux",
-  description: "Offrez une carte cadeau. De 20 € à 1 000 €, livraison instantanée par e-mail, valable dans tous nos magasins en Europe.",
+  description: "Offrez une carte cadeau. De 20 € à 500 €, livraison instantanée par e-mail, valable dans tous nos magasins en Europe.",
   robots: { index: true, follow: true },
   openGraph: { title: "Cartes cadeaux", type: "website", locale: "fr_FR", siteName: "Cartes cadeaux" },
 };

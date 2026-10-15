@@ -16,7 +16,7 @@
 SumUp doit pouvoir appeler votre webhook : lancez un tunnel HTTPS (`ngrok http 3000`) et mettez l'URL dans `SITE_URL`.
 
 ## Flux de paiement
-1. `POST /api/checkout` valide le montant (20–1000 €) côté serveur, crée la commande (`pending`) puis un checkout SumUp hébergé.
+1. `POST /api/checkout` valide le montant (20–500 €) côté serveur, crée la commande (`pending`) puis un checkout SumUp hébergé.
 2. Le client paie chez SumUp, puis revient sur `/merci?order=<uuid>`.
 3. Le **serveur** relit le checkout via l'API SumUp (webhook `POST /api/webhooks/sumup?token=…` et page `/merci`), vérifie statut `PAID`, montant, devise, référence.
 4. Seulement alors : commande `paid`, carte créée (code aléatoire), e-mail envoyé **une seule fois** (traitement idempotent).
@@ -54,8 +54,8 @@ Pour Vercel, ajoutez les mêmes variables dans les réglages du projet, avec
 ## Catalogue des enseignes
 
 Le catalogue contient 28 enseignes et propose les montants 20, 25, 50, 100, 150, 200,
-250, 500 et 1 000 €. Le formulaire permet aussi un montant entier personnalisé
-entre 20 et 1 000 €. L'enseigne est validée côté serveur et enregistrée dans
+250 et 500 €. Le formulaire permet aussi un montant entier personnalisé
+entre 20 et 500 €. L'enseigne est validée côté serveur et enregistrée dans
 `orders.brand`, puis affichée dans les dernières commandes de l'administration.
 Pour une base déjà créée, appliquer `supabase/migrations/20261015_add_order_brand.sql`
 avant le déploiement. Une nouvelle base utilise directement `supabase/schema.sql`.
@@ -74,3 +74,5 @@ Pour une base existante, appliquer `supabase/migrations/20261015_add_order_quant
 Le bouton globe de l’en-tête propose le français, l’anglais, l’allemand, l’espagnol, l’italien et le néerlandais. Le choix est conservé dans le stockage local du navigateur. Les traductions de l’interface publique sont intégrées dans `src/lib/i18n/translations.json`, sans service de traduction externe à l’exécution. Pour ajouter un texte, utiliser `T` ou `t` depuis `LanguageProvider` et ajouter sa traduction dans les cinq dictionnaires (le français est le texte source). Conserver les paramètres entre accolades, les marques, les codes et les valeurs envoyées aux API. L’administration, les e-mails et la page de paiement SumUp suivent leur propre langue.
 
 Pour autoriser les montants de 20 € et 25 € dans une base existante, appliquer `supabase/migrations/20261015_add_20_25_amounts.sql` après la migration des quantités.
+
+Le plafond d’achat est de 500 € par carte, contrôlé par le formulaire et l’API de commande. Les contraintes de base existantes restent compatibles avec les anciennes commandes supérieures à 500 €.
